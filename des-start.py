@@ -101,16 +101,11 @@ P_LIST = [16, 7, 20, 21,
 
 def hex_to_binary(key):
     """Converts a hexadecimal key to its binary representation"""
-    # binary_array = []
     counter = 0
     binary_string = ""
     for letter in key:
         counter += 1
         binary_string += bin(int(letter, 16))[2:].zfill(4)
-        # if counter == 2:
-        # binary_array.append(binary_string)
-        # counter = 0
-        # binary_string = ""
     return list(binary_string)
 
 
@@ -118,8 +113,6 @@ def permutation(key, values):
     """"Performs a permutation based on values stored in list"""
     permutedkey = []
     for i in range(len(values)):
-        # print(i)
-        # permutedkey[i] = key[int(PC_1[i])-1]
         permutedkey.insert(i, key[int(values[i]) - 1])
     return permutedkey
 
@@ -164,7 +157,8 @@ def encrypt_decrypt(hex_key, plaintext, decryption):
 
     # Message encode
     binary_message = hex_to_binary(plaintext)
-    ## Initial permutation
+
+    # Initial permutation
     p_message = permutation(binary_message, IP_TABLE)
 
     # Feistel (f) function
@@ -175,12 +169,11 @@ def encrypt_decrypt(hex_key, plaintext, decryption):
     r_temp_block = r_block
 
     for i in range(16):
-        new_l_block = r_temp_block  # L1 = R0
-        # R1 = L0 xor f(R0, K1)
+        new_l_block = r_temp_block
         if not decryption:
             new_r_block = xor_lists(l_temp_block, feistel_function(r_temp_block, keys[i]))
         else:
-            new_r_block = xor_lists(l_temp_block, feistel_function(r_temp_block, keys[15-i]))
+            new_r_block = xor_lists(l_temp_block, feistel_function(r_temp_block, keys[15 - i]))
         r_temp_block = new_r_block
         l_temp_block = new_l_block
 
@@ -199,7 +192,7 @@ def encrypt_decrypt(hex_key, plaintext, decryption):
 
 def feistel_function(block_32, key):
     """Expansion, key mixing, substitution, permutation"""
-    exp_block = e_bit_function(block_32)
+    exp_block = permutation(block_32, E_BIT_SELECTION_TABLE)
     xored_list = xor_lists(exp_block, key)
 
     # Split the list into 6-sized chunks
@@ -221,40 +214,15 @@ def apply_sbox(block_48):
         column_int = int(column_str, 2)
 
         result = S_BOXES[i][row_int][column_int]
-        # sboxed_list.insert(i, bin(result)[2:].zfill(4))
         sboxed_str += bin(result)[2:].zfill(4)
 
     return list(sboxed_str)
 
 
-def apply_sbox_inverse(block_48):
-    """Use s-boxes for a new 32-bits block"""
-    sboxed_str = ""
-    for i in reversed(range(len(S_BOXES))):
-        # First and last bit
-        row_str = block_48[i][0] + block_48[i][5]
-        row_int = int(row_str, 2)
-
-        column_str = ''.join(block_48[i][1:5])
-        column_int = int(column_str, 2)
-
-        result = S_BOXES[i][row_int][column_int]
-        # sboxed_list.insert(i, bin(result)[2:].zfill(4))
-        sboxed_str += bin(result)[2:].zfill(4)
-
-    return list(sboxed_str)
-
-
-def list_splitter(list, n):
+def list_splitter(a_list, n):
     """Splits a list into n parts"""
-    for i in xrange(0, len(list), n):
-        yield map(str, list[i:i + n])
-
-
-def e_bit_function(block_32):
-    """Permutate a 32 bits input block to a 48 bits output block
-    using the E_BIT_SELECTION_TABLE"""
-    return permutation(block_32, E_BIT_SELECTION_TABLE)
+    for i in xrange(0, len(a_list), n):
+        yield map(str, a_list[i:i + n])
 
 
 def xor_lists(list1, list2):
