@@ -3,6 +3,7 @@ import DesStart
 
 top = Tk()
 top.geometry("400x200")
+top.title("DES Algorithm")
 # Code to add widgets will go here...
 
 def encrypt():
