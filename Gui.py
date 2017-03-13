@@ -2,7 +2,7 @@ from Tkinter import *
 import DesStart
 
 top = Tk()
-top.geometry("400x200")
+top.geometry("290x130")
 top.title("DES Algorithm")
 # Code to add widgets will go here...
 
@@ -18,33 +18,40 @@ def descrypt():
     T.insert(END, result)
 
 
-abutton = Button(top, text ="Encriptar", command = encrypt)
-abutton.pack()
-abutton.place(x=250, y=30)
+abutton = Button(top, text ="   Encriptar  ", command = encrypt)
+abutton.grid(row=1, column=1)
+# abutton.pack()
+# abutton.place(x=250, y=30)
 
 abutton = Button(top, text ="Desencriptar",command = descrypt)
-abutton.pack()
-abutton.place(x=250, y=60)
+abutton.grid(row=3, column=1)
+# abutton.pack()
+# abutton.place(x=250, y=60)
 
 keyLabel = Label(top,text= "Key")
-keyLabel.place(x=20, y=15)
+keyLabel.grid(row=0, sticky=W)
+# keyLabel.place(x=20, y=15)
 
 keyInputext = Entry(top)
 keyInputext.insert(END,"133457799BBCDFF1")
-keyInputext.place(x=20,y=30)
+keyInputext.grid(row=1, sticky=W)
+# keyInputext.place(x=20,y=30)
 
 plainLabel = Label(top,text="Plaintext")
-plainLabel.place(x=20, y=60)
+plainLabel.grid(row=2, sticky=W)
+# plainLabel.place(x=20, y=60)
 
 plainInputtext = Entry(top)
 plainInputtext.insert(END,"0123456789ABCDEF")
-plainInputtext.place(x=20,y=80)
+plainInputtext.grid(row=3, sticky=W)
+# plainInputtext.place(x=20,y=80)
 
 
 T = Text(top, height=2, width=40)
-T.pack()
+# T.pack()
 T.insert(END,"Resultado")
-T.place(x=50,y=130)
+T.grid(row=4, columnspan=2)
+# T.place(x=50,y=130)
 
 
 
